@@ -3,6 +3,7 @@ package org.nsgg.main;
 import org.joml.Math;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
+import org.joml.Vector4f;
 import org.lwjgl.glfw.GLFW;
 import org.nsgg.core.*;
 import org.nsgg.core.entity.Entity;
@@ -10,7 +11,9 @@ import org.nsgg.core.entity.Material;
 import org.nsgg.core.entity.Model;
 import org.nsgg.core.entity.Texture;
 import org.nsgg.core.entity.scenes.SceneManager;
+import org.nsgg.core.entity.terrain.BlendMapTerrain;
 import org.nsgg.core.entity.terrain.Terrain;
+import org.nsgg.core.entity.terrain.TerrainTexture;
 import org.nsgg.core.lighting.DirectionalLight;
 import org.nsgg.core.lighting.PointLight;
 import org.nsgg.core.lighting.SpotLight;
@@ -48,14 +51,24 @@ public class GameLogic implements ILogic {
     public void init() throws Exception {
         renderer.init();
 
-        Terrain terrain = new Terrain(new Vector3f(0,-1,-800), loader, new Material(new Texture(loader.loadTexture("src/main/resources/textures/lucky_block.png")),0.1f, 0.5f));
-        Terrain terrain1 = new Terrain(new Vector3f(-800,-1,-800), loader, new Material(new Texture(loader.loadTexture("src/main/resources/textures/lucky_block.png")),0.1f, 0.5f));
-        sceneManager.addTerrain(terrain);
-        sceneManager.addTerrain(terrain1);
-
         Model model = loader.loadOBJModel("src/main/resources/models/cube.obj");
         model.setTexture(new Texture(loader.loadTexture("src/main/resources/textures/lucky_block.png")), 1.0f);
         model.getMaterial().setMetal(0);
+
+        final int globalTextureID = model.getMaterial().getTexture().getId();
+
+        TerrainTexture backgroundTexture = new TerrainTexture(globalTextureID);
+        TerrainTexture redTexture = new TerrainTexture(globalTextureID);
+        TerrainTexture greenTexture = new TerrainTexture(globalTextureID);
+        TerrainTexture blueTexture = new TerrainTexture(globalTextureID);
+        TerrainTexture blendMap = new TerrainTexture(globalTextureID);
+
+        BlendMapTerrain blendMapTerrain = new BlendMapTerrain(backgroundTexture,redTexture,greenTexture,blueTexture);
+
+        Terrain terrain = new Terrain(new Vector3f(0,-1,-800), loader, new Material(new Vector4f(0.0f,0.0f,0.0f,0.0f), 0.1f, 0.5f),blendMapTerrain, blendMap);
+        Terrain terrain1 = new Terrain(new Vector3f(-800,-1,-800), loader, new Material(new Vector4f(0.0f,0.0f,0.0f,0.0f), 0.1f, 0.5f),blendMapTerrain, blendMap);
+        sceneManager.addTerrain(terrain);
+        sceneManager.addTerrain(terrain1);
 
         Random random = new Random();
         for(int i = 0; i < 200; i++) {

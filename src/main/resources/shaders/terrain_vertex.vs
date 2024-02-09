@@ -18,5 +18,5 @@ void main() {
 
     fragNormal = normalize(transformationMatrix * vec4(normal, 0)).xyz;
     fragPos = worldPos.xyz;
-    fragTextureCoord = textureCoord / 2.5;
+    fragTextureCoord = textureCoord;
 }
