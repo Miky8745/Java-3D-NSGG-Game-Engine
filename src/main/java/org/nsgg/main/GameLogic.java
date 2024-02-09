@@ -48,13 +48,13 @@ public class GameLogic implements ILogic {
     public void init() throws Exception {
         renderer.init();
 
-        Terrain terrain = new Terrain(new Vector3f(0,-1,-800), loader, new Material(new Texture(loader.loadTexture("src/main/resources/textures/grass.png")),0.1f, 0.5f));
-        Terrain terrain1 = new Terrain(new Vector3f(-800,-1,-800), loader, new Material(new Texture(loader.loadTexture("src/main/resources/textures/grass.png")),0.1f, 0.5f));
+        Terrain terrain = new Terrain(new Vector3f(0,-1,-800), loader, new Material(new Texture(loader.loadTexture("src/main/resources/textures/lucky_block.png")),0.1f, 0.5f));
+        Terrain terrain1 = new Terrain(new Vector3f(-800,-1,-800), loader, new Material(new Texture(loader.loadTexture("src/main/resources/textures/lucky_block.png")),0.1f, 0.5f));
         sceneManager.addTerrain(terrain);
         sceneManager.addTerrain(terrain1);
 
         Model model = loader.loadOBJModel("src/main/resources/models/cube.obj");
-        model.setTexture(new Texture(loader.loadTexture("src/main/resources/textures/grass.png")), 1.0f);
+        model.setTexture(new Texture(loader.loadTexture("src/main/resources/textures/lucky_block.png")), 1.0f);
         model.getMaterial().setMetal(0);
 
         Random random = new Random();
