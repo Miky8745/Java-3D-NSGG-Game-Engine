@@ -7,11 +7,11 @@ import static org.nsgg.core.utils.Consts.TITLE;
 
 public class Launcher {
     private static WinManager window;
-    private static TestGame game;
+    private static GameLogic game;
 
     public static void main(String[] args) {
         window = new WinManager(TITLE, 1920, 1080,true);
-        game = new TestGame();
+        game = new GameLogic();
         EngineManager engine = new EngineManager();
         try {
             engine.start();
@@ -24,7 +24,7 @@ public class Launcher {
         return window;
     }
 
-    public static TestGame getGame() {
+    public static GameLogic getGame() {
         return game;
     }
 }
