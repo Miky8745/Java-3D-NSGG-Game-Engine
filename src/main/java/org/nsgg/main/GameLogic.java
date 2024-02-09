@@ -16,13 +16,12 @@ import org.nsgg.core.lighting.PointLight;
 import org.nsgg.core.lighting.SpotLight;
 import org.nsgg.core.rendering.RenderingManager;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 import static org.nsgg.core.utils.Consts.CAMERA_MOVE_SPEED;
 import static org.nsgg.core.utils.Consts.MOUSE_SENSITIVITY;
 
-public class TestGame implements ILogic {
+public class GameLogic implements ILogic {
 
     private final RenderingManager renderer;
     private final WinManager window;
@@ -35,7 +34,7 @@ public class TestGame implements ILogic {
     private SceneManager sceneManager;
 
 
-    public TestGame() {
+    public GameLogic() {
         renderer = new RenderingManager();
         window = Launcher.getWindow();
         loader = new ObjectLoader();
