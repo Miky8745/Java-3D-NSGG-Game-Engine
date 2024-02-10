@@ -51,12 +51,12 @@ public class EntityRender implements IRenderer {
     }
 
     @Override
-    public void render(Camera camera, PointLight[] pointLights, SpotLight[] spotLights, DirectionalLight directionalLight) {
+    public void render(Camera camera, PointLight[] pointLights, SpotLight[] spotLights, DirectionalLight directionalLight, boolean nightVision) {
         shader.bind();
 
         shader.setUniform("projectionMatrix", Launcher.getWindow().updateProjectionMatrix());
         shader.setUniform("cameraPos", camera.getPosition());
-        RenderingManager.renderLights(shader, pointLights, spotLights, directionalLight);
+        RenderingManager.renderLights(shader, pointLights, spotLights, directionalLight, nightVision);
         for (Model model : entities.keySet()) {
             bind(model);
             List<Entity> entityList = entities.get(model);

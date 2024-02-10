@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.nsgg.core.utils.Consts.AMBIENT_LIGHT;
+import static org.nsgg.core.utils.Consts.NIGHT_VISION_AMBIENT_LIGHT;
 
 public class SceneManager {
 
@@ -23,12 +24,14 @@ public class SceneManager {
     private float spotAngle = 0;
     private float spotInc = 1;
     private Vector3f ambientLight;
+    private boolean nightVision;
 
-    public SceneManager(float lightAngle) {
+    public SceneManager(float lightAngle, boolean nightVision) {
         entities = new ArrayList<>();
         terrains = new ArrayList<>();
-        ambientLight = AMBIENT_LIGHT;
+        ambientLight = nightVision ? NIGHT_VISION_AMBIENT_LIGHT : AMBIENT_LIGHT;
         this.lightAngle = lightAngle;
+        this.nightVision = nightVision;
     }
 
     public List<Entity> getEntities() {
@@ -117,5 +120,13 @@ public class SceneManager {
 
     public void incLightAngle(float angle) {
         this.lightAngle += angle;
+    }
+
+    public boolean isNightVision() {
+        return nightVision;
+    }
+
+    public void setNightVision(boolean nightVision) {
+        this.nightVision = nightVision;
     }
 }

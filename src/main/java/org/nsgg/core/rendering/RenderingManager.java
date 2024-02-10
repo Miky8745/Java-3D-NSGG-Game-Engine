@@ -15,8 +15,7 @@ import org.nsgg.main.Launcher;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.nsgg.core.utils.Consts.AMBIENT_LIGHT;
-import static org.nsgg.core.utils.Consts.SPECULAR_POWER;
+import static org.nsgg.core.utils.Consts.*;
 
 public class RenderingManager {
 
@@ -37,8 +36,8 @@ public class RenderingManager {
     }
 
     public static void renderLights(ShaderManager shader, PointLight[] pointLights, SpotLight[] spotLights,
-                             DirectionalLight directionalLight) {
-        shader.setUniform("ambientLight", AMBIENT_LIGHT);
+                             DirectionalLight directionalLight, boolean nightVision) {
+        shader.setUniform("ambientLight", nightVision ? NIGHT_VISION_AMBIENT_LIGHT : AMBIENT_LIGHT);
         shader.setUniform("specularPower", SPECULAR_POWER);
         shader.setUniform("spotLights", spotLights);
         shader.setUniform("pointLights", pointLights);
@@ -46,10 +45,10 @@ public class RenderingManager {
     }
 
     public void render(Camera camera, SceneManager sceneManager) {
-        render(camera, sceneManager.getDirectionalLight(), sceneManager.getPointLights(), sceneManager.getSpotLights());
+        render(camera, sceneManager.getDirectionalLight(), sceneManager.getPointLights(), sceneManager.getSpotLights(), sceneManager.isNightVision());
     }
 
-    public void render(Camera camera, DirectionalLight directionalLight, PointLight[] pointLights, SpotLight[] spotLights) {
+    public void render(Camera camera, DirectionalLight directionalLight, PointLight[] pointLights, SpotLight[] spotLights, boolean nightVision) {
         clear();
 
         if (window.isResize()) {
@@ -57,8 +56,8 @@ public class RenderingManager {
             window.setResize(true);
         }
 
-        entityRender.render(camera, pointLights, spotLights, directionalLight);
-        terrainRender.render(camera, pointLights, spotLights, directionalLight);
+        entityRender.render(camera, pointLights, spotLights, directionalLight, nightVision);
+        terrainRender.render(camera, pointLights, spotLights, directionalLight, nightVision);
     }
 
     public void processEntities(Entity entity) {

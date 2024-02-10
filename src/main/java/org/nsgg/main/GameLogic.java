@@ -3,6 +3,7 @@ package org.nsgg.main;
 import org.joml.Math;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
+import org.joml.Vector4f;
 import org.lwjgl.glfw.GLFW;
 import org.nsgg.core.*;
 import org.nsgg.core.entity.Entity;
@@ -10,7 +11,9 @@ import org.nsgg.core.entity.Material;
 import org.nsgg.core.entity.Model;
 import org.nsgg.core.entity.Texture;
 import org.nsgg.core.entity.scenes.SceneManager;
+import org.nsgg.core.entity.terrain.BlendMapTerrain;
 import org.nsgg.core.entity.terrain.Terrain;
+import org.nsgg.core.entity.terrain.TerrainTexture;
 import org.nsgg.core.lighting.DirectionalLight;
 import org.nsgg.core.lighting.PointLight;
 import org.nsgg.core.lighting.SpotLight;
@@ -32,6 +35,7 @@ public class GameLogic implements ILogic {
     Vector3f cameraRotInc;
     private boolean speed = false;
     private SceneManager sceneManager;
+    public boolean nightVision = false;
 
 
     public GameLogic() {
@@ -41,21 +45,29 @@ public class GameLogic implements ILogic {
         camera = new Camera();
         cameraInc = new Vector3f(0,0,0);
         cameraRotInc = new Vector3f(0,0,0);
-        sceneManager = new SceneManager(-90);
+        sceneManager = new SceneManager(-90, nightVision);
     }
 
     @Override
     public void init() throws Exception {
         renderer.init();
 
-        Terrain terrain = new Terrain(new Vector3f(0,-1,-800), loader, new Material(new Texture(loader.loadTexture("src/main/resources/textures/lucky_block.png")),0.1f, 0.5f));
-        Terrain terrain1 = new Terrain(new Vector3f(-800,-1,-800), loader, new Material(new Texture(loader.loadTexture("src/main/resources/textures/lucky_block.png")),0.1f, 0.5f));
-        sceneManager.addTerrain(terrain);
-        sceneManager.addTerrain(terrain1);
-
         Model model = loader.loadOBJModel("src/main/resources/models/cube.obj");
         model.setTexture(new Texture(loader.loadTexture("src/main/resources/textures/lucky_block.png")), 1.0f);
         model.getMaterial().setMetal(0);
+
+        TerrainTexture backgroundTexture = new TerrainTexture(loader.loadTexture("src/main/resources/textures/grass.png"));
+        TerrainTexture redTexture = new TerrainTexture(loader.loadTexture("src/main/resources/textures/flowers.png"));
+        TerrainTexture greenTexture = new TerrainTexture(loader.loadTexture("src/main/resources/textures/dirt.png"));
+        TerrainTexture blueTexture = new TerrainTexture(loader.loadTexture("src/main/resources/textures/stone.png"));
+        TerrainTexture blendMap = new TerrainTexture(loader.loadTexture("src/main/resources/textures/blendMap.png"));
+
+        BlendMapTerrain blendMapTerrain = new BlendMapTerrain(backgroundTexture,redTexture,greenTexture,blueTexture);
+
+        Terrain terrain = new Terrain(new Vector3f(0,-1,-800), loader, new Material(new Vector4f(0.0f,0.0f,0.0f,0.0f), 0.1f, 0.5f),blendMapTerrain, blendMap);
+        Terrain terrain1 = new Terrain(new Vector3f(-800,-1,-800), loader, new Material(new Vector4f(0.0f,0.0f,0.0f,0.0f), 0.1f, 0.5f),blendMapTerrain, blendMap);
+        sceneManager.addTerrain(terrain);
+        sceneManager.addTerrain(terrain1);
 
         Random random = new Random();
         for(int i = 0; i < 200; i++) {
@@ -146,11 +158,18 @@ public class GameLogic implements ILogic {
         if(window.isKeyPressed(GLFW.GLFW_KEY_LEFT_CONTROL)) {
             speed = true;
         }
+
+        if(window.isKeyPressed(GLFW.GLFW_KEY_V)) {
+            nightVision = true;
+        }
+        if(window.isKeyPressed(GLFW.GLFW_KEY_B)) {
+            nightVision = false;
+        }
     }
 
     @Override
     public void update(float interval, MouseInput input) {
-        int speedMultiplier = speed ? 10 : 1;
+        int speedMultiplier = speed ? 50 : 1;
         camera.movePosition(cameraInc.x * CAMERA_MOVE_SPEED * speedMultiplier, cameraInc.y * CAMERA_MOVE_SPEED * speedMultiplier, cameraInc.z * CAMERA_MOVE_SPEED * speedMultiplier);
 
         if (input.isRightButtonPress()) {
@@ -167,6 +186,8 @@ public class GameLogic implements ILogic {
 
         pitch = camera.getRotation().x;
         yaw = camera.getRotation().y;
+
+        sceneManager.setNightVision(nightVision);
 
         for (Entity entity : sceneManager.getEntities()) {
             renderer.processEntities(entity);
