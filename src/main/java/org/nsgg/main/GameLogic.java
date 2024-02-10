@@ -21,6 +21,7 @@ import org.nsgg.core.rendering.RenderingManager;
 
 import java.util.Random;
 
+import static org.lwjgl.glfw.GLFW.*;
 import static org.nsgg.core.utils.Consts.CAMERA_MOVE_SPEED;
 import static org.nsgg.core.utils.Consts.MOUSE_SENSITIVITY;
 
@@ -134,6 +135,8 @@ public class GameLogic implements ILogic {
     public void input() {
         cameraInc.set(0,0,0);
         cameraRotInc.set(0,0,0);
+        glfwSetInputMode(window.getWindow(), GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+        glfwSetCursorPos(window.getWindow(), (double) window.getWidth() /2, (double) window.getHeight() /2);
         speed = false;
         if(window.isKeyPressed(GLFW.GLFW_KEY_W)) {
             cameraInc.z = -1;
@@ -173,10 +176,9 @@ public class GameLogic implements ILogic {
         int speedMultiplier = speed ? 50 : 1;
         camera.movePosition(cameraInc.x * CAMERA_MOVE_SPEED * speedMultiplier, cameraInc.y * CAMERA_MOVE_SPEED * speedMultiplier, cameraInc.z * CAMERA_MOVE_SPEED * speedMultiplier);
 
-        if (input.isRightButtonPress()) {
-            Vector2f rotVec = input.getDisplayVec();
-            camera.moveRotation(rotVec.x * MOUSE_SENSITIVITY, rotVec.y * MOUSE_SENSITIVITY, 0);
-        }
+
+        Vector2f rotVec = input.getDisplayVec();
+        camera.moveRotation(rotVec.x * MOUSE_SENSITIVITY, rotVec.y * MOUSE_SENSITIVITY, 0);
 
         //entity.incRotation(0.0f,0.25f,0.0f);
         //lightAngle += 0.25f;

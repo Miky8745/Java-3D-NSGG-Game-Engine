@@ -13,7 +13,7 @@ public class MouseInput {
 
     public MouseInput() {
         previousPos = new Vector2d(-1,-1);
-        currentPos = new Vector2d(0,0);
+        currentPos = new Vector2d(-1,-1);
         displayVec = new Vector2f();
     }
 
@@ -36,6 +36,7 @@ public class MouseInput {
     public void input() {
         displayVec.y = 0;
         displayVec.x = 0;
+        System.out.println(previousPos.x);
         if(previousPos.x > 0 && previousPos.y > 0 && inWindow) {
             double x = currentPos.x - previousPos.x;
             double y = currentPos.y - previousPos.y;
@@ -48,10 +49,11 @@ public class MouseInput {
                 displayVec.x = (float) y;
             }
         }
-            previousPos.x = currentPos.x;
-            previousPos.y = currentPos.y;
+            //previousPos.x = currentPos.x;
+            //previousPos.y = currentPos.y;
 
-
+            previousPos.x = (double) Launcher.getWindow().getWidth() /2;
+            previousPos.y = (double) Launcher.getWindow().getHeight() /2;
     }
 
     public Vector2f getDisplayVec() {
