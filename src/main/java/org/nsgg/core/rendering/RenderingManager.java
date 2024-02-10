@@ -22,6 +22,7 @@ public class RenderingManager {
     private final WinManager window;
     private EntityRender entityRender;
     private TerrainRender terrainRender;
+    private static boolean isCulling = false;
 
     public RenderingManager() {
         window = Launcher.getWindow();
@@ -83,5 +84,22 @@ public class RenderingManager {
     public void cleanup() {
         entityRender.cleanup();
         terrainRender.cleanup();
+    }
+
+    public static void enableCulling() {
+        if(isCulling) {
+            return;
+        }
+        GL11.glEnable(GL11.GL_CULL_FACE);
+        GL11.glCullFace(GL11.GL_BACK);
+        isCulling = true;
+    }
+
+    public static void disableCulling() {
+        if(!isCulling) {
+            return;
+        }
+        GL11.glDisable(GL11.GL_CULL_FACE);
+        isCulling = false;
     }
 }

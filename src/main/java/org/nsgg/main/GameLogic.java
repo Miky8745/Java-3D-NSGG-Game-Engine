@@ -55,6 +55,7 @@ public class GameLogic implements ILogic {
         Model model = loader.loadOBJModel("src/main/resources/models/cube.obj");
         model.setTexture(new Texture(loader.loadTexture("src/main/resources/textures/lucky_block.png")), 1.0f);
         model.getMaterial().setMetal(0);
+        model.getMaterial().setDisableCulling(true);
 
         TerrainTexture backgroundTexture = new TerrainTexture(loader.loadTexture("src/main/resources/textures/grass.png"));
         TerrainTexture redTexture = new TerrainTexture(loader.loadTexture("src/main/resources/textures/flowers.png"));

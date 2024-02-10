@@ -8,6 +8,7 @@ public class Material {
     private Vector4f ambientColor, diffuseColor, specularColor;
     private float reflectance, metal;
     private Texture texture;
+    private boolean disableCulling;
 
     public Material() {
         this.ambientColor = DEFAULT_COLOR;
@@ -16,6 +17,7 @@ public class Material {
         this.texture = null;
         this.reflectance = 0;
         this.metal = 0.5f;
+        this.disableCulling = false;
     }
 
     public Material(Vector4f color, float reflectance, float metal) {
@@ -34,6 +36,18 @@ public class Material {
         this(DEFAULT_COLOR, DEFAULT_COLOR, DEFAULT_COLOR, reflectance, texture, metal);
     }
 
+    public Material(Vector4f color, float reflectance, Texture texture, float metal, boolean disableCulling) {
+        this(color,color,color,reflectance, texture, metal, disableCulling);
+    }
+
+    public Material(Texture texture, boolean disableCulling) {
+        this(DEFAULT_COLOR, DEFAULT_COLOR, DEFAULT_COLOR, 0, texture, 0.5f, disableCulling);
+    }
+
+    public Material(Texture texture, float reflectance, float metal, boolean disableCulling) {
+        this(DEFAULT_COLOR, DEFAULT_COLOR, DEFAULT_COLOR, reflectance, texture, metal, disableCulling);
+    }
+
     public Material(Vector4f ambientColor, Vector4f diffuseColor, Vector4f specularColor, float reflectance, Texture texture, float metal) {
         this.ambientColor = ambientColor;
         this.diffuseColor = diffuseColor;
@@ -41,6 +55,17 @@ public class Material {
         this.reflectance = reflectance;
         this.texture = texture;
         this.metal = metal;
+        this.disableCulling = false;
+    }
+
+    public Material(Vector4f ambientColor, Vector4f diffuseColor, Vector4f specularColor, float reflectance, Texture texture, float metal, boolean disableCulling) {
+        this.ambientColor = ambientColor;
+        this.diffuseColor = diffuseColor;
+        this.specularColor = specularColor;
+        this.reflectance = reflectance;
+        this.texture = texture;
+        this.metal = metal;
+        this.disableCulling = disableCulling;
     }
 
     public Vector4f getAmbientColor() {
@@ -93,5 +118,13 @@ public class Material {
 
     public void setMetal(float metal) {
         this.metal = metal;
+    }
+
+    public boolean isDisableCulling() {
+        return disableCulling;
+    }
+
+    public void setDisableCulling(boolean disableCulling) {
+        this.disableCulling = disableCulling;
     }
 }
