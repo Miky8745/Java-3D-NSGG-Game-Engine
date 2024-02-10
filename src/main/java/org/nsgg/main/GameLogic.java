@@ -35,6 +35,7 @@ public class GameLogic implements ILogic {
     Vector3f cameraRotInc;
     private boolean speed = false;
     private SceneManager sceneManager;
+    public boolean nightVision = false;
 
 
     public GameLogic() {
@@ -44,7 +45,7 @@ public class GameLogic implements ILogic {
         camera = new Camera();
         cameraInc = new Vector3f(0,0,0);
         cameraRotInc = new Vector3f(0,0,0);
-        sceneManager = new SceneManager(-90);
+        sceneManager = new SceneManager(-90, nightVision);
     }
 
     @Override
@@ -55,13 +56,11 @@ public class GameLogic implements ILogic {
         model.setTexture(new Texture(loader.loadTexture("src/main/resources/textures/lucky_block.png")), 1.0f);
         model.getMaterial().setMetal(0);
 
-        final int globalTextureID = model.getMaterial().getTexture().getId();
-
-        TerrainTexture backgroundTexture = new TerrainTexture(globalTextureID);
-        TerrainTexture redTexture = new TerrainTexture(globalTextureID);
-        TerrainTexture greenTexture = new TerrainTexture(globalTextureID);
-        TerrainTexture blueTexture = new TerrainTexture(globalTextureID);
-        TerrainTexture blendMap = new TerrainTexture(globalTextureID);
+        TerrainTexture backgroundTexture = new TerrainTexture(loader.loadTexture("src/main/resources/textures/grass.png"));
+        TerrainTexture redTexture = new TerrainTexture(loader.loadTexture("src/main/resources/textures/flowers.png"));
+        TerrainTexture greenTexture = new TerrainTexture(loader.loadTexture("src/main/resources/textures/dirt.png"));
+        TerrainTexture blueTexture = new TerrainTexture(loader.loadTexture("src/main/resources/textures/stone.png"));
+        TerrainTexture blendMap = new TerrainTexture(loader.loadTexture("src/main/resources/textures/blendMap.png"));
 
         BlendMapTerrain blendMapTerrain = new BlendMapTerrain(backgroundTexture,redTexture,greenTexture,blueTexture);
 
@@ -159,11 +158,18 @@ public class GameLogic implements ILogic {
         if(window.isKeyPressed(GLFW.GLFW_KEY_LEFT_CONTROL)) {
             speed = true;
         }
+
+        if(window.isKeyPressed(GLFW.GLFW_KEY_V)) {
+            nightVision = true;
+        }
+        if(window.isKeyPressed(GLFW.GLFW_KEY_B)) {
+            nightVision = false;
+        }
     }
 
     @Override
     public void update(float interval, MouseInput input) {
-        int speedMultiplier = speed ? 10 : 1;
+        int speedMultiplier = speed ? 50 : 1;
         camera.movePosition(cameraInc.x * CAMERA_MOVE_SPEED * speedMultiplier, cameraInc.y * CAMERA_MOVE_SPEED * speedMultiplier, cameraInc.z * CAMERA_MOVE_SPEED * speedMultiplier);
 
         if (input.isRightButtonPress()) {
@@ -180,6 +186,8 @@ public class GameLogic implements ILogic {
 
         pitch = camera.getRotation().x;
         yaw = camera.getRotation().y;
+
+        sceneManager.setNightVision(nightVision);
 
         for (Entity entity : sceneManager.getEntities()) {
             renderer.processEntities(entity);

@@ -10,7 +10,7 @@ public interface IRenderer<T> {
 
     public void init() throws Exception;
 
-    public void render(Camera camera, PointLight[] pointLights, SpotLight[] spotLights, DirectionalLight directionalLight);
+    public void render(Camera camera, PointLight[] pointLights, SpotLight[] spotLights, DirectionalLight directionalLight, boolean nightVision);
 
     abstract void bind(Model model);
 
