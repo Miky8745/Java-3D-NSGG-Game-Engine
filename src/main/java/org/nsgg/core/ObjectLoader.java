@@ -1,5 +1,6 @@
 package org.nsgg.core;
 
+import org.lwjgl.system.CallbackI;
 import org.nsgg.core.entity.Model;
 import org.nsgg.core.utils.Utils;
 import org.joml.Vector2f;
@@ -11,7 +12,12 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.stb.STBImage;
 import org.lwjgl.system.MemoryStack;
+import org.nsgg.main.Launcher;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
@@ -63,6 +69,17 @@ public class ObjectLoader {
         GL30.glGenerateMipmap(GL11.GL_TEXTURE_2D);
         STBImage.stbi_image_free(buffer);
         return id;
+    }
+
+    public BufferedImage loadHeightMap(String path) throws Exception {
+        BufferedImage mapFile = null;
+
+        mapFile = ImageIO.read(new File(path));
+        if(mapFile == null) {
+            throw new FileNotFoundException("File " + path + " not found.");
+        }
+
+        return mapFile;
     }
 
     private int createVAO() {

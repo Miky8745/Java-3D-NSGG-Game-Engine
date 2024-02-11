@@ -3,6 +3,7 @@ package org.nsgg.core.utils;
 
 import org.lwjgl.system.MemoryUtil;
 
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
@@ -48,5 +49,9 @@ public class Utils {
             e.printStackTrace();
         }
         return list;
+    }
+
+    public static int getBlueAmountOnPixel(int x, int y, BufferedImage image) {
+        return image.getRGB(x,y) & 0xFF;
     }
 }

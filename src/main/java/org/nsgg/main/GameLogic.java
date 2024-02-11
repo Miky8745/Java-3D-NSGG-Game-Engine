@@ -18,7 +18,9 @@ import org.nsgg.core.lighting.DirectionalLight;
 import org.nsgg.core.lighting.PointLight;
 import org.nsgg.core.lighting.SpotLight;
 import org.nsgg.core.rendering.RenderingManager;
+import org.nsgg.core.utils.Utils;
 
+import java.awt.image.BufferedImage;
 import java.util.Random;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -36,7 +38,10 @@ public class GameLogic implements ILogic {
     Vector3f cameraRotInc;
     private boolean speed = false;
     private SceneManager sceneManager;
-    public boolean nightVision = false;
+    public boolean nightVision = true;
+    public boolean lock = false;
+    private boolean escPressed = false;
+    public BufferedImage heightMap;
 
 
     public GameLogic() {
@@ -62,14 +67,15 @@ public class GameLogic implements ILogic {
         TerrainTexture redTexture = new TerrainTexture(loader.loadTexture("src/main/resources/textures/flowers.png"));
         TerrainTexture greenTexture = new TerrainTexture(loader.loadTexture("src/main/resources/textures/dirt.png"));
         TerrainTexture blueTexture = new TerrainTexture(loader.loadTexture("src/main/resources/textures/stone.png"));
-        TerrainTexture blendMap = new TerrainTexture(loader.loadTexture("src/main/resources/textures/blendMap.png"));
+        TerrainTexture blendMap = new TerrainTexture(loader.loadTexture("src/main/resources/textures/emptyBlendMap.png"));
+        heightMap = loader.loadHeightMap("src/main/resources/textures/heightMap.png");
 
         BlendMapTerrain blendMapTerrain = new BlendMapTerrain(backgroundTexture,redTexture,greenTexture,blueTexture);
 
-        Terrain terrain = new Terrain(new Vector3f(0,-1,-800), loader, new Material(new Vector4f(0.0f,0.0f,0.0f,0.0f), 0.1f, 0.5f),blendMapTerrain, blendMap);
-        Terrain terrain1 = new Terrain(new Vector3f(-800,-1,-800), loader, new Material(new Vector4f(0.0f,0.0f,0.0f,0.0f), 0.1f, 0.5f),blendMapTerrain, blendMap);
+        Terrain terrain = new Terrain(new Vector3f(0,-1,-400), loader, new Material(new Vector4f(0.0f,0.0f,0.0f,0.0f), 0.1f, 0.5f),blendMapTerrain, blendMap);
+        //Terrain terrain1 = new Terrain(new Vector3f(-800,-1,-800), loader, new Material(new Vector4f(0.0f,0.0f,0.0f,0.0f), 0.1f, 0.5f),blendMapTerrain, blendMap);
         sceneManager.addTerrain(terrain);
-        sceneManager.addTerrain(terrain1);
+        //sceneManager.addTerrain(terrain1);
 
         Random random = new Random();
         for(int i = 0; i < 200; i++) {
@@ -169,6 +175,13 @@ public class GameLogic implements ILogic {
         if(window.isKeyPressed(GLFW.GLFW_KEY_B)) {
             nightVision = false;
         }
+
+        if(window.isKeyPressed(GLFW_KEY_ESCAPE) && !escPressed){
+            escPressed = true;
+            lock = !lock;
+        } else if(escPressed && !window.isKeyPressed(GLFW_KEY_ESCAPE)){
+            escPressed = false;
+        }
     }
 
     @Override
@@ -176,17 +189,10 @@ public class GameLogic implements ILogic {
         int speedMultiplier = speed ? 50 : 1;
         camera.movePosition(cameraInc.x * CAMERA_MOVE_SPEED * speedMultiplier, cameraInc.y * CAMERA_MOVE_SPEED * speedMultiplier, cameraInc.z * CAMERA_MOVE_SPEED * speedMultiplier);
 
-
-        Vector2f rotVec = input.getDisplayVec();
-        camera.moveRotation(rotVec.x * MOUSE_SENSITIVITY, rotVec.y * MOUSE_SENSITIVITY, 0);
-
-        //entity.incRotation(0.0f,0.25f,0.0f);
-        //lightAngle += 0.25f;
-        //directionalLight.setIntensity(1);
-
-        //spotLights[0].getPointLight().setIntensity(1);
-        //System.out.println(spotLights[0].getPointLight().getPos().z);
-
+        if(!lock) {
+            Vector2f rotVec = input.getDisplayVec();
+            camera.moveRotation(rotVec.x * MOUSE_SENSITIVITY, rotVec.y * MOUSE_SENSITIVITY, 0);
+        }
         pitch = camera.getRotation().x;
         yaw = camera.getRotation().y;
 

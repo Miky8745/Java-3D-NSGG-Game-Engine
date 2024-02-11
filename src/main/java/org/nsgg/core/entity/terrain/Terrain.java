@@ -1,10 +1,16 @@
 package org.nsgg.core.entity.terrain;
 
+import org.joml.Random;
 import org.joml.Vector3f;
+import org.lwjgl.opengl.GL11;
 import org.nsgg.core.ObjectLoader;
 import org.nsgg.core.entity.Material;
 import org.nsgg.core.entity.Model;
 import org.nsgg.core.entity.Texture;
+import org.nsgg.core.utils.Utils;
+import org.nsgg.main.Launcher;
+
+import java.awt.image.BufferedImage;
 
 import static org.nsgg.core.utils.Consts.TERRAIN_SIZE;
 import static org.nsgg.core.utils.Consts.TERRAIN_VERTEX_COUNT;
@@ -15,6 +21,7 @@ public class Terrain {
     private Model model;
     private TerrainTexture blendMap;
     private BlendMapTerrain blendMapTerrain;
+    private Random rnd = new Random();
 
     public Terrain(Vector3f pos, ObjectLoader loader, Material material, BlendMapTerrain blendMapTerrain, TerrainTexture blendMap) {
         this.pos = pos;
@@ -26,16 +33,16 @@ public class Terrain {
 
     private Model generateTerrain(ObjectLoader loader) {
         int count = TERRAIN_VERTEX_COUNT * TERRAIN_VERTEX_COUNT;
+        BufferedImage heightMap = Launcher.getGame().heightMap;
         float[] vertices = new float[count * 3];
         float[] normals = new float[count * 3];
         float[] textureCoords = new float[count * 2];
         int[] indices = new int[6 * (TERRAIN_VERTEX_COUNT - 1) * (TERRAIN_VERTEX_COUNT - 1)];
         int vertexPointer = 0;
-
         for (int i = 0; i < TERRAIN_VERTEX_COUNT; i++) {
             for (int j = 0; j < TERRAIN_VERTEX_COUNT; j++) {
                 vertices[vertexPointer * 3] = j / (TERRAIN_VERTEX_COUNT - 1.0f) * TERRAIN_SIZE;
-                vertices[vertexPointer * 3 + 1] = 0;
+                vertices[vertexPointer * 3 + 1] = (float) Utils.getBlueAmountOnPixel(i, j, heightMap) / 2;
                 vertices[vertexPointer * 3 + 2] = i / (TERRAIN_VERTEX_COUNT - 1.0f) * TERRAIN_SIZE;
                 normals[vertexPointer * 3] = 0;
                 normals[vertexPointer * 3 + 1] = 1;
