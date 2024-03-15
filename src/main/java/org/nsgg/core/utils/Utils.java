@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Utils {
+    public static float deltaTime = 0;
 
     public static FloatBuffer storeDataInFloatBuffer(float[] data) {
         FloatBuffer buffer = MemoryUtil.memAllocFloat(data.length);

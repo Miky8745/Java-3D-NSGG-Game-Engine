@@ -5,11 +5,13 @@ import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 import org.lwjgl.glfw.GLFW;
-import org.nsgg.core.*;
-import org.nsgg.core.entity.Entity;
-import org.nsgg.core.entity.Material;
-import org.nsgg.core.entity.Model;
-import org.nsgg.core.entity.Texture;
+import org.nsgg.core.ILogic;
+import org.nsgg.core.MouseInput;
+import org.nsgg.core.ObjectLoader;
+import org.nsgg.core.WinManager;
+import org.nsgg.core.entity.*;
+import org.nsgg.core.entity.collisions.Collidable;
+import org.nsgg.core.entity.collisions.CollisionManager;
 import org.nsgg.core.entity.scenes.SceneManager;
 import org.nsgg.core.entity.terrain.BlendMapTerrain;
 import org.nsgg.core.entity.terrain.Terrain;
@@ -21,6 +23,8 @@ import org.nsgg.core.rendering.RenderingManager;
 import org.nsgg.core.utils.Utils;
 
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -42,13 +46,14 @@ public class GameLogic implements ILogic {
     public boolean lock = false;
     private boolean escPressed = false;
     public BufferedImage heightMap;
+    private CollisionManager collisionManager;
 
 
     public GameLogic() {
         renderer = new RenderingManager();
         window = Launcher.getWindow();
         loader = new ObjectLoader();
-        camera = new Camera();
+        camera = new Camera(new Vector3f(0,-1,0), new Vector3f(0,0,0));
         cameraInc = new Vector3f(0,0,0);
         cameraRotInc = new Vector3f(0,0,0);
         sceneManager = new SceneManager(-90, nightVision);
@@ -68,11 +73,11 @@ public class GameLogic implements ILogic {
         TerrainTexture greenTexture = new TerrainTexture(loader.loadTexture("src/main/resources/textures/dirt.png"));
         TerrainTexture blueTexture = new TerrainTexture(loader.loadTexture("src/main/resources/textures/stone.png"));
         TerrainTexture blendMap = new TerrainTexture(loader.loadTexture("src/main/resources/textures/emptyBlendMap.png"));
-        heightMap = loader.loadHeightMap("src/main/resources/textures/heightMap.png");
+        heightMap = loader.loadHeightMap("src/main/resources/textures/emptyBlendMap.png");
 
         BlendMapTerrain blendMapTerrain = new BlendMapTerrain(backgroundTexture,redTexture,greenTexture,blueTexture);
 
-        Terrain terrain = new Terrain(new Vector3f(0,-1,-400), loader, new Material(new Vector4f(0.0f,0.0f,0.0f,0.0f), 0.1f, 0.5f),blendMapTerrain, blendMap);
+        Terrain terrain = new Terrain(new Vector3f(0,-1,0), loader, new Material(new Vector4f(0.0f,0.0f,0.0f,0.0f), 0.1f, 0.5f),blendMapTerrain, blendMap);
         //Terrain terrain1 = new Terrain(new Vector3f(-800,-1,-800), loader, new Material(new Vector4f(0.0f,0.0f,0.0f,0.0f), 0.1f, 0.5f),blendMapTerrain, blendMap);
         sceneManager.addTerrain(terrain);
         //sceneManager.addTerrain(terrain1);
@@ -135,6 +140,10 @@ public class GameLogic implements ILogic {
 
         sceneManager.setPointLights(pointLights);
         sceneManager.setSpotLights(spotLights);
+
+        List<Collidable> collidables = new ArrayList<>();
+        collidables.add(camera);
+        collisionManager = new CollisionManager(sceneManager.getTerrains(), collidables);
     }
 
     @Override
@@ -205,6 +214,9 @@ public class GameLogic implements ILogic {
         for (Terrain terrain : sceneManager.getTerrains()) {
             renderer.processTerrain(terrain);
         }
+
+        collisionManager.update();
+        System.out.println(Utils.deltaTime);
     }
 
     @Override

@@ -4,7 +4,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
-import org.nsgg.core.Camera;
+import org.nsgg.core.entity.Camera;
 import org.nsgg.core.ShaderManager;
 import org.nsgg.core.entity.Entity;
 import org.nsgg.core.entity.Model;

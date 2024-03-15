@@ -2,6 +2,7 @@ package org.nsgg.core;
 
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
+import org.nsgg.core.utils.Utils;
 import org.nsgg.main.Launcher;
 
 import static org.nsgg.core.utils.Consts.FRAMERATE;
@@ -16,6 +17,8 @@ public class EngineManager {
     private GLFWErrorCallback errorCallback;
     private ILogic gameLogic;
     private MouseInput mouseInput;
+    private long lastFrame;
+    private long thisFrame;
 
     private void init() throws Exception {
         GLFW.glfwSetErrorCallback(errorCallback = GLFWErrorCallback.createPrint(System.err));
@@ -25,6 +28,8 @@ public class EngineManager {
         mouseInput = new MouseInput();
         gameLogic.init();
         mouseInput.init();
+        this.lastFrame = System.nanoTime();
+        this.thisFrame = System.nanoTime();
     }
 
     public void start() throws Exception {
@@ -72,6 +77,9 @@ public class EngineManager {
                 update(frametime);
                 render();
                 frames++;
+                thisFrame = System.nanoTime();
+                Utils.deltaTime = thisFrame - lastFrame;
+                lastFrame = thisFrame;
             }
         }
         cleanup();

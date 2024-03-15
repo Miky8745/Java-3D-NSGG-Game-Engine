@@ -1,17 +1,16 @@
 package org.nsgg.core.entity;
 
 import org.joml.Vector3f;
+import org.nsgg.core.entity.collisions.Collidable;
 
-public class Entity {
+public class Entity extends Collidable {
 
     private Model model;
-    private Vector3f pos, rotation;
     private float scale;
 
     public Entity(Model model, Vector3f pos, Vector3f rotation, float scale) {
+        super(pos, rotation);
         this.model = model;
-        this.pos = pos;
-        this.rotation = rotation;
         this.scale = scale;
     }
 

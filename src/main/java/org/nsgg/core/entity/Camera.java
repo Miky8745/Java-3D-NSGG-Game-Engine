@@ -1,40 +1,37 @@
-package org.nsgg.core;
+package org.nsgg.core.entity;
 
 import org.joml.Math;
 import org.joml.Vector3f;
+import org.nsgg.core.entity.collisions.Collidable;
 
-public class Camera {
-
-    private Vector3f position, rotation;
+public class Camera extends Collidable {
 
     public Camera() {
-        position = new Vector3f(0,0,0);
-        rotation = new Vector3f(0,0,0);
+        super(new Vector3f(0,0,0),new Vector3f(0,0,0));
     }
 
     public Camera(Vector3f position, Vector3f rotation) {
-        this.rotation = rotation;
-        this.position = position;
+        super(position,rotation);
     }
 
     public void movePosition(float x, float y, float z) {
         if(z != 0) {
-            position.x += (float) Math.sin(Math.toRadians(rotation.y)) * -1.0f * z;
-            position.z += (float) Math.cos(Math.toRadians(rotation.y)) * z;
+            pos.x += (float) Math.sin(Math.toRadians(rotation.y)) * -1.0f * z;
+            pos.z += (float) Math.cos(Math.toRadians(rotation.y)) * z;
         }
 
         if(x != 0) {
-            position.x += (float) Math.cos(Math.toRadians(rotation.y)) * -1.0f * x;
-            position.z += (float) Math.sin(Math.toRadians(rotation.y)) * -1.0f * x;
+            pos.x += (float) Math.cos(Math.toRadians(rotation.y)) * -1.0f * x;
+            pos.z += (float) Math.sin(Math.toRadians(rotation.y)) * -1.0f * x;
         }
 
-        position.y += y;
+        pos.y += y;
     }
 
     public void setPosition(float x, float y, float z) {
-        this.position.x = x;
-        this.position.y = y;
-        this.position.z = z;
+        this.pos.x = x;
+        this.pos.y = y;
+        this.pos.z = z;
     }
 
     public void setRotation(float x, float y, float z) {
@@ -59,7 +56,7 @@ public class Camera {
     }
 
     public Vector3f getPosition() {
-        return position;
+        return pos;
     }
 
     public Vector3f getRotation() {

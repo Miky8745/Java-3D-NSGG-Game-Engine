@@ -1,6 +1,6 @@
 package org.nsgg.core.rendering;
 
-import org.nsgg.core.Camera;
+import org.nsgg.core.entity.Camera;
 import org.nsgg.core.entity.Model;
 import org.nsgg.core.lighting.DirectionalLight;
 import org.nsgg.core.lighting.PointLight;
