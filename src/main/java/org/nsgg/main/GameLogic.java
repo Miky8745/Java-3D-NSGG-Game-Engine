@@ -10,8 +10,7 @@ import org.nsgg.core.MouseInput;
 import org.nsgg.core.ObjectLoader;
 import org.nsgg.core.WinManager;
 import org.nsgg.core.entity.*;
-import org.nsgg.core.entity.collisions.Collidable;
-import org.nsgg.core.entity.collisions.CollisionManager;
+import org.nsgg.core.physics.PhysicsManager;
 import org.nsgg.core.entity.scenes.SceneManager;
 import org.nsgg.core.entity.terrain.BlendMapTerrain;
 import org.nsgg.core.entity.terrain.Terrain;
@@ -20,11 +19,8 @@ import org.nsgg.core.lighting.DirectionalLight;
 import org.nsgg.core.lighting.PointLight;
 import org.nsgg.core.lighting.SpotLight;
 import org.nsgg.core.rendering.RenderingManager;
-import org.nsgg.core.utils.Utils;
 
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -46,7 +42,7 @@ public class GameLogic implements ILogic {
     public boolean lock = false;
     private boolean escPressed = false;
     public BufferedImage heightMap;
-    private CollisionManager collisionManager;
+    private PhysicsManager physicsManager;
 
 
     public GameLogic() {
@@ -141,9 +137,8 @@ public class GameLogic implements ILogic {
         sceneManager.setPointLights(pointLights);
         sceneManager.setSpotLights(spotLights);
 
-        List<Collidable> collidables = new ArrayList<>();
-        collidables.add(camera);
-        collisionManager = new CollisionManager(sceneManager.getTerrains(), collidables);
+        sceneManager.addCollidable(camera);
+        physicsManager = new PhysicsManager(sceneManager.getTerrains(), sceneManager.getCollidables());
     }
 
     @Override
@@ -196,7 +191,7 @@ public class GameLogic implements ILogic {
     @Override
     public void update(float interval, MouseInput input) {
         int speedMultiplier = speed ? 50 : 1;
-        camera.movePosition(cameraInc.x * CAMERA_MOVE_SPEED * speedMultiplier, cameraInc.y * CAMERA_MOVE_SPEED * speedMultiplier, cameraInc.z * CAMERA_MOVE_SPEED * speedMultiplier);
+        camera.movePosition(cameraInc.x * CAMERA_MOVE_SPEED * speedMultiplier, cameraInc.y * 100, cameraInc.z * CAMERA_MOVE_SPEED * speedMultiplier);
 
         if(!lock) {
             Vector2f rotVec = input.getDisplayVec();
@@ -215,8 +210,8 @@ public class GameLogic implements ILogic {
             renderer.processTerrain(terrain);
         }
 
-        collisionManager.update();
-        System.out.println(Utils.deltaTime);
+        physicsManager.update();
+        //System.out.println(Utils.deltaTime);
     }
 
     @Override

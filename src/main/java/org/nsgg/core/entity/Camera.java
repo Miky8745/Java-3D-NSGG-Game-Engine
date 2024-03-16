@@ -2,7 +2,7 @@ package org.nsgg.core.entity;
 
 import org.joml.Math;
 import org.joml.Vector3f;
-import org.nsgg.core.entity.collisions.Collidable;
+import org.nsgg.core.physics.collisions.Collidable;
 
 public class Camera extends Collidable {
 

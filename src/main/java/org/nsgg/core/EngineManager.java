@@ -78,7 +78,7 @@ public class EngineManager {
                 render();
                 frames++;
                 thisFrame = System.nanoTime();
-                Utils.deltaTime = thisFrame - lastFrame;
+                Utils.deltaTime = ((thisFrame - lastFrame) / 1000000000f);
                 lastFrame = thisFrame;
             }
         }

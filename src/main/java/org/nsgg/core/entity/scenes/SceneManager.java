@@ -6,6 +6,7 @@ import org.nsgg.core.entity.terrain.Terrain;
 import org.nsgg.core.lighting.DirectionalLight;
 import org.nsgg.core.lighting.PointLight;
 import org.nsgg.core.lighting.SpotLight;
+import org.nsgg.core.physics.collisions.Collidable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +26,7 @@ public class SceneManager {
     private float spotInc = 1;
     private Vector3f ambientLight;
     private boolean nightVision;
+    private List<Collidable> collidables;
 
     public SceneManager(float lightAngle, boolean nightVision) {
         entities = new ArrayList<>();
@@ -32,6 +34,7 @@ public class SceneManager {
         ambientLight = nightVision ? NIGHT_VISION_AMBIENT_LIGHT : AMBIENT_LIGHT;
         this.lightAngle = lightAngle;
         this.nightVision = nightVision;
+        this.collidables = new ArrayList<>();
     }
 
     public List<Entity> getEntities() {
@@ -128,5 +131,23 @@ public class SceneManager {
 
     public void setNightVision(boolean nightVision) {
         this.nightVision = nightVision;
+    }
+
+    public List<Collidable> getCollidables() {
+        return collidables;
+    }
+
+    public void setCollidables(List<Collidable> collidables) {
+        this.collidables = collidables;
+    }
+
+    public void addCollidable(Collidable collidable) {
+        if(!collidables.contains(collidable)) {
+            collidables.add(collidable);
+        }
+    }
+
+    public void removeCollidable(Collidable collidable) {
+        collidables.remove(collidable);
     }
 }

@@ -1,21 +1,34 @@
 package org.nsgg.core.physics;
 
-import org.nsgg.core.entity.collisions.Collidable;
-import org.nsgg.core.entity.collisions.ICollisionTracker;
+import org.nsgg.core.entity.scenes.SceneManager;
+import org.nsgg.core.physics.collisions.Collidable;
+import org.nsgg.core.utils.Utils;
 
 import java.util.List;
 
-public class Gravity implements ICollisionTracker {
+import static org.nsgg.core.utils.Consts.G;
+
+public class Gravity implements IPhysics {
 
     private List<Collidable> toProcess;
 
+    public Gravity(List<Collidable> toProcess) {
+        this.toProcess = toProcess;
+    }
 
     @Override
     public void update() {
         for (Collidable collidable : toProcess) {
-            if(collidable.onGround) {continue;}
+            //System.out.println(collidable.onGround);
+            if(collidable.onGround) {
+                collidable.vy = 0;
+                continue;
+            }
 
-            //collidable.vy += -9.81f *
+
+
+            collidable.vy += G * Utils.deltaTime;
+            collidable.pos.y += collidable.vy;
         }
     }
 
@@ -27,5 +40,9 @@ public class Gravity implements ICollisionTracker {
     @Override
     public void remove(Collidable collidable) {
         toProcess.remove(collidable);
+    }
+
+    public void syncWithSceneManager(SceneManager sceneManagerInstance) {
+        toProcess = sceneManagerInstance.getCollidables();
     }
 }

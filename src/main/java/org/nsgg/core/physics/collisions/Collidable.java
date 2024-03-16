@@ -1,10 +1,10 @@
-package org.nsgg.core.entity.collisions;
+package org.nsgg.core.physics.collisions;
 
 import org.joml.Vector3f;
 
 public class Collidable {
 
-    protected Vector3f pos, rotation;
+    public Vector3f pos, rotation;
     public boolean onGround;
     public float vy;
 
