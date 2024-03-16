@@ -26,6 +26,7 @@ public class TerrainCollision implements IPhysics {
             for (Collidable artifact : collidables) {
                 if (!((terrain.getPos().x - artifact.pos.x + halfTerrainSize > -halfTerrainSize && terrain.getPos().x - artifact.pos.x + halfTerrainSize < halfTerrainSize) &&
                         (terrain.getPos().z - artifact.pos.z + halfTerrainSize > -halfTerrainSize && terrain.getPos().z - artifact.pos.z + halfTerrainSize < halfTerrainSize))){
+                    artifact.onGround = false;
                     continue;
                 }
 

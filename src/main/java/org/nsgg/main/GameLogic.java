@@ -139,6 +139,7 @@ public class GameLogic implements ILogic {
 
         sceneManager.addCollidable(camera);
         physicsManager = new PhysicsManager(sceneManager.getTerrains(), sceneManager.getCollidables());
+        camera.setPosition(15,2,15);
     }
 
     @Override
@@ -162,8 +163,8 @@ public class GameLogic implements ILogic {
             cameraInc.x = -1;
         }
 
-        if(window.isKeyPressed(GLFW.GLFW_KEY_SPACE)) {
-            cameraInc.y = 1;
+        if(window.isKeyPressed(GLFW.GLFW_KEY_SPACE) && camera.onGround) {
+            camera.vy = 10;
         }
         if(window.isKeyPressed(GLFW.GLFW_KEY_LEFT_SHIFT)) {
             cameraInc.y = -1;
@@ -191,7 +192,7 @@ public class GameLogic implements ILogic {
     @Override
     public void update(float interval, MouseInput input) {
         int speedMultiplier = speed ? 50 : 1;
-        camera.movePosition(cameraInc.x * CAMERA_MOVE_SPEED * speedMultiplier, cameraInc.y * 100, cameraInc.z * CAMERA_MOVE_SPEED * speedMultiplier);
+        camera.movePosition(cameraInc.x * CAMERA_MOVE_SPEED * speedMultiplier, 0, cameraInc.z * CAMERA_MOVE_SPEED * speedMultiplier);
 
         if(!lock) {
             Vector2f rotVec = input.getDisplayVec();

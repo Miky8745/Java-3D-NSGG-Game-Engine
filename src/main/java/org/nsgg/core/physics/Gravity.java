@@ -19,16 +19,14 @@ public class Gravity implements IPhysics {
     @Override
     public void update() {
         for (Collidable collidable : toProcess) {
-            //System.out.println(collidable.onGround);
+            collidable.pos.y += collidable.vy;
             if(collidable.onGround) {
-                collidable.vy = 0;
+                if (collidable.vy < 0) {
+                    collidable.vy = 0;
+                }
                 continue;
             }
-
-
-
             collidable.vy += G * Utils.deltaTime;
-            collidable.pos.y += collidable.vy;
         }
     }
 
