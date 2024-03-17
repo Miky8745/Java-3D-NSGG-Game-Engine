@@ -1,9 +1,9 @@
 package org.nsgg.core.rendering;
 
 import org.lwjgl.opengl.GL11;
-import org.nsgg.core.entity.Camera;
 import org.nsgg.core.ShaderManager;
 import org.nsgg.core.WinManager;
+import org.nsgg.core.entity.Camera;
 import org.nsgg.core.entity.Entity;
 import org.nsgg.core.entity.scenes.SceneManager;
 import org.nsgg.core.entity.terrain.Terrain;

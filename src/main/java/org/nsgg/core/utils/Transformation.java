@@ -1,10 +1,10 @@
 package org.nsgg.core.utils;
 
-import org.nsgg.core.entity.Camera;
-import org.nsgg.core.entity.Entity;
 import org.joml.Math;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
+import org.nsgg.core.entity.Camera;
+import org.nsgg.core.entity.Entity;
 import org.nsgg.core.entity.terrain.Terrain;
 
 public class Transformation {

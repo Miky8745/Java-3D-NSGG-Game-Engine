@@ -1,8 +1,5 @@
 package org.nsgg.core;
 
-import org.lwjgl.system.CallbackI;
-import org.nsgg.core.entity.Model;
-import org.nsgg.core.utils.Utils;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector3i;
@@ -12,7 +9,8 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.stb.STBImage;
 import org.lwjgl.system.MemoryStack;
-import org.nsgg.main.Launcher;
+import org.nsgg.core.entity.Model;
+import org.nsgg.core.utils.Utils;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
