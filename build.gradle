@@ -1,5 +1,7 @@
 plugins {
     id 'java'
+    id 'com.github.johnrengelman.shadow' version '8.1.0'
+    id "idea"
 }
 
 project.ext.lwjglVersion = "3.2.3"
@@ -93,9 +95,12 @@ dependencies {
 }
 
 jar {
+    duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
     manifest {
-        attributes(
-                'Main-Class': 'org.nssg.main.Launcher'
-        )
+        attributes "Main-Class": "org.nsgg.main.Launcher"
+    }
+
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
     }
 }
