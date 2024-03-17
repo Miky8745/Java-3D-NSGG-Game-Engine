@@ -1,15 +1,17 @@
 package org.nsgg.main;
 
+import jdk.jshell.execution.Util;
 import org.joml.Math;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 import org.lwjgl.glfw.GLFW;
-import org.nsgg.core.*;
-import org.nsgg.core.entity.Entity;
-import org.nsgg.core.entity.Material;
-import org.nsgg.core.entity.Model;
-import org.nsgg.core.entity.Texture;
+import org.nsgg.core.ILogic;
+import org.nsgg.core.MouseInput;
+import org.nsgg.core.ObjectLoader;
+import org.nsgg.core.WinManager;
+import org.nsgg.core.entity.*;
+import org.nsgg.core.physics.PhysicsManager;
 import org.nsgg.core.entity.scenes.SceneManager;
 import org.nsgg.core.entity.terrain.BlendMapTerrain;
 import org.nsgg.core.entity.terrain.Terrain;
@@ -24,8 +26,7 @@ import java.awt.image.BufferedImage;
 import java.util.Random;
 
 import static org.lwjgl.glfw.GLFW.*;
-import static org.nsgg.core.utils.Consts.CAMERA_MOVE_SPEED;
-import static org.nsgg.core.utils.Consts.MOUSE_SENSITIVITY;
+import static org.nsgg.core.utils.Consts.*;
 
 public class GameLogic implements ILogic {
 
@@ -42,13 +43,15 @@ public class GameLogic implements ILogic {
     public boolean lock = false;
     private boolean escPressed = false;
     public BufferedImage heightMap;
+    private PhysicsManager physicsManager;
+    public boolean gmsp, gamemode_changed = false;
 
 
     public GameLogic() {
         renderer = new RenderingManager();
         window = Launcher.getWindow();
         loader = new ObjectLoader();
-        camera = new Camera();
+        camera = new Camera(new Vector3f(0,-1,0), new Vector3f(0,0,0));
         cameraInc = new Vector3f(0,0,0);
         cameraRotInc = new Vector3f(0,0,0);
         sceneManager = new SceneManager(-90, nightVision);
@@ -68,11 +71,11 @@ public class GameLogic implements ILogic {
         TerrainTexture greenTexture = new TerrainTexture(loader.loadTexture("src/main/resources/textures/dirt.png"));
         TerrainTexture blueTexture = new TerrainTexture(loader.loadTexture("src/main/resources/textures/stone.png"));
         TerrainTexture blendMap = new TerrainTexture(loader.loadTexture("src/main/resources/textures/emptyBlendMap.png"));
-        heightMap = loader.loadHeightMap("src/main/resources/textures/heightMap.png");
+        heightMap = loader.loadHeightMap("src/main/resources/textures/emptyBlendMap.png");
 
         BlendMapTerrain blendMapTerrain = new BlendMapTerrain(backgroundTexture,redTexture,greenTexture,blueTexture);
 
-        Terrain terrain = new Terrain(new Vector3f(0,-1,-400), loader, new Material(new Vector4f(0.0f,0.0f,0.0f,0.0f), 0.1f, 0.5f),blendMapTerrain, blendMap);
+        Terrain terrain = new Terrain(new Vector3f(0,-1,0), loader, new Material(new Vector4f(0.0f,0.0f,0.0f,0.0f), 0.1f, 0.5f),blendMapTerrain, blendMap);
         //Terrain terrain1 = new Terrain(new Vector3f(-800,-1,-800), loader, new Material(new Vector4f(0.0f,0.0f,0.0f,0.0f), 0.1f, 0.5f),blendMapTerrain, blendMap);
         sceneManager.addTerrain(terrain);
         //sceneManager.addTerrain(terrain1);
@@ -135,6 +138,10 @@ public class GameLogic implements ILogic {
 
         sceneManager.setPointLights(pointLights);
         sceneManager.setSpotLights(spotLights);
+
+        sceneManager.addCollidable(camera);
+        physicsManager = new PhysicsManager(sceneManager.getTerrains(), sceneManager.getCollidables());
+        camera.setPosition(15,2,15);
     }
 
     @Override
@@ -159,10 +166,16 @@ public class GameLogic implements ILogic {
         }
 
         if(window.isKeyPressed(GLFW.GLFW_KEY_SPACE)) {
-            cameraInc.y = 1;
+            if (!gmsp && camera.onGround) {
+                camera.vy = JUMP_HEIGHT;
+            } else if(gmsp) {
+                cameraInc.y = 1;
+            }
         }
         if(window.isKeyPressed(GLFW.GLFW_KEY_LEFT_SHIFT)) {
-            cameraInc.y = -1;
+            if(gmsp) {
+                cameraInc.y = -1;
+            }
         }
 
         if(window.isKeyPressed(GLFW.GLFW_KEY_LEFT_CONTROL)) {
@@ -182,11 +195,22 @@ public class GameLogic implements ILogic {
         } else if(escPressed && !window.isKeyPressed(GLFW_KEY_ESCAPE)){
             escPressed = false;
         }
+
+        if(window.isKeyPressed(GLFW.GLFW_KEY_G) && !gamemode_changed) {
+            gamemode_changed = true;
+            gmsp = !gmsp;
+        } else if (gamemode_changed && !window.isKeyPressed(GLFW.GLFW_KEY_G)) {
+            gamemode_changed = false;
+        }
+
+        if(window.isKeyPressed(GLFW_KEY_R)) {
+            camera.setPosition(15,2,15);
+        }
     }
 
     @Override
     public void update(float interval, MouseInput input) {
-        int speedMultiplier = speed ? 50 : 1;
+        int speedMultiplier = speed ? 10 : 1;
         camera.movePosition(cameraInc.x * CAMERA_MOVE_SPEED * speedMultiplier, cameraInc.y * CAMERA_MOVE_SPEED * speedMultiplier, cameraInc.z * CAMERA_MOVE_SPEED * speedMultiplier);
 
         if(!lock) {
@@ -204,6 +228,19 @@ public class GameLogic implements ILogic {
 
         for (Terrain terrain : sceneManager.getTerrains()) {
             renderer.processTerrain(terrain);
+        }
+
+        physicsManager.update();
+        System.out.println(gmsp);
+
+        if (gmsp) {
+            if (camera.physics) {
+                Utils.removeAllPhysicsFromCollidableObject(camera);
+                camera.physics = false;
+            }
+        } else if (!camera.physics) {
+            Utils.addAllPhysicsUnitsToCollidableObject(camera);
+            camera.physics = true;
         }
     }
 
@@ -223,6 +260,10 @@ public class GameLogic implements ILogic {
     }
     public float getYaw() {
         return yaw;
+    }
+
+    public PhysicsManager getPhysicsManager() {
+        return physicsManager;
     }
 }
 

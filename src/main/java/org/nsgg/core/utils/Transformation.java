@@ -1,6 +1,6 @@
 package org.nsgg.core.utils;
 
-import org.nsgg.core.Camera;
+import org.nsgg.core.entity.Camera;
 import org.nsgg.core.entity.Entity;
 import org.joml.Math;
 import org.joml.Matrix4f;
