@@ -1,6 +1,5 @@
 package org.nsgg.main;
 
-import jdk.jshell.execution.Util;
 import org.joml.Math;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
@@ -11,7 +10,6 @@ import org.nsgg.core.MouseInput;
 import org.nsgg.core.ObjectLoader;
 import org.nsgg.core.WinManager;
 import org.nsgg.core.entity.*;
-import org.nsgg.core.physics.PhysicsManager;
 import org.nsgg.core.entity.scenes.SceneManager;
 import org.nsgg.core.entity.terrain.BlendMapTerrain;
 import org.nsgg.core.entity.terrain.Terrain;
@@ -19,6 +17,7 @@ import org.nsgg.core.entity.terrain.TerrainTexture;
 import org.nsgg.core.lighting.DirectionalLight;
 import org.nsgg.core.lighting.PointLight;
 import org.nsgg.core.lighting.SpotLight;
+import org.nsgg.core.physics.PhysicsManager;
 import org.nsgg.core.rendering.RenderingManager;
 import org.nsgg.core.utils.Utils;
 
@@ -231,7 +230,7 @@ public class GameLogic implements ILogic {
         }
 
         physicsManager.update();
-        System.out.println(gmsp);
+        //System.out.println(gmsp);
 
         if (gmsp) {
             if (camera.physics) {
