@@ -1,5 +1,6 @@
 package org.nsgg.main;
 
+import jdk.jshell.execution.Util;
 import org.joml.Math;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
@@ -19,13 +20,13 @@ import org.nsgg.core.lighting.DirectionalLight;
 import org.nsgg.core.lighting.PointLight;
 import org.nsgg.core.lighting.SpotLight;
 import org.nsgg.core.rendering.RenderingManager;
+import org.nsgg.core.utils.Utils;
 
 import java.awt.image.BufferedImage;
 import java.util.Random;
 
 import static org.lwjgl.glfw.GLFW.*;
-import static org.nsgg.core.utils.Consts.CAMERA_MOVE_SPEED;
-import static org.nsgg.core.utils.Consts.MOUSE_SENSITIVITY;
+import static org.nsgg.core.utils.Consts.*;
 
 public class GameLogic implements ILogic {
 
@@ -43,6 +44,7 @@ public class GameLogic implements ILogic {
     private boolean escPressed = false;
     public BufferedImage heightMap;
     private PhysicsManager physicsManager;
+    public boolean gmsp, gamemode_changed = false;
 
 
     public GameLogic() {
@@ -163,11 +165,17 @@ public class GameLogic implements ILogic {
             cameraInc.x = -1;
         }
 
-        if(window.isKeyPressed(GLFW.GLFW_KEY_SPACE) && camera.onGround) {
-            camera.vy = 10;
+        if(window.isKeyPressed(GLFW.GLFW_KEY_SPACE)) {
+            if (!gmsp && camera.onGround) {
+                camera.vy = JUMP_HEIGHT;
+            } else if(gmsp) {
+                cameraInc.y = 1;
+            }
         }
         if(window.isKeyPressed(GLFW.GLFW_KEY_LEFT_SHIFT)) {
-            cameraInc.y = -1;
+            if(gmsp) {
+                cameraInc.y = -1;
+            }
         }
 
         if(window.isKeyPressed(GLFW.GLFW_KEY_LEFT_CONTROL)) {
@@ -187,12 +195,23 @@ public class GameLogic implements ILogic {
         } else if(escPressed && !window.isKeyPressed(GLFW_KEY_ESCAPE)){
             escPressed = false;
         }
+
+        if(window.isKeyPressed(GLFW.GLFW_KEY_G) && !gamemode_changed) {
+            gamemode_changed = true;
+            gmsp = !gmsp;
+        } else if (gamemode_changed && !window.isKeyPressed(GLFW.GLFW_KEY_G)) {
+            gamemode_changed = false;
+        }
+
+        if(window.isKeyPressed(GLFW_KEY_R)) {
+            camera.setPosition(15,2,15);
+        }
     }
 
     @Override
     public void update(float interval, MouseInput input) {
-        int speedMultiplier = speed ? 50 : 1;
-        camera.movePosition(cameraInc.x * CAMERA_MOVE_SPEED * speedMultiplier, 0, cameraInc.z * CAMERA_MOVE_SPEED * speedMultiplier);
+        int speedMultiplier = speed ? 10 : 1;
+        camera.movePosition(cameraInc.x * CAMERA_MOVE_SPEED * speedMultiplier, cameraInc.y * CAMERA_MOVE_SPEED * speedMultiplier, cameraInc.z * CAMERA_MOVE_SPEED * speedMultiplier);
 
         if(!lock) {
             Vector2f rotVec = input.getDisplayVec();
@@ -212,7 +231,17 @@ public class GameLogic implements ILogic {
         }
 
         physicsManager.update();
-        //System.out.println(Utils.deltaTime);
+        System.out.println(gmsp);
+
+        if (gmsp) {
+            if (camera.physics) {
+                Utils.removeAllPhysicsFromCollidableObject(camera);
+                camera.physics = false;
+            }
+        } else if (!camera.physics) {
+            Utils.addAllPhysicsUnitsToCollidableObject(camera);
+            camera.physics = true;
+        }
     }
 
     @Override
@@ -231,6 +260,10 @@ public class GameLogic implements ILogic {
     }
     public float getYaw() {
         return yaw;
+    }
+
+    public PhysicsManager getPhysicsManager() {
+        return physicsManager;
     }
 }
 

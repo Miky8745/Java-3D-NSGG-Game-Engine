@@ -5,7 +5,7 @@ import org.joml.Vector3f;
 public class Collidable {
 
     public Vector3f pos, rotation;
-    public boolean onGround;
+    public boolean onGround, physics;
     public float vy;
 
     public Collidable(Vector3f pos, Vector3f rotation) {
@@ -13,5 +13,6 @@ public class Collidable {
         this.rotation = rotation;
         this.onGround = true;
         this.vy = 0;
+        this.physics = true;
     }
 }

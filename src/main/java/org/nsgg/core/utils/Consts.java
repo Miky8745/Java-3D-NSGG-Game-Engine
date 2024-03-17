@@ -22,4 +22,5 @@ public class Consts {
     public static final int MAX_POINT_LIGHTS = 5;
     public static final Vector3f NIGHT_VISION_AMBIENT_LIGHT = new Vector3f(1,1,1);
     public static final float G = -9.81f;
+    public static final float JUMP_HEIGHT = 5;
 }

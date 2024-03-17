@@ -2,6 +2,9 @@ package org.nsgg.core.utils;
 
 
 import org.lwjgl.system.MemoryUtil;
+import org.nsgg.core.physics.IPhysics;
+import org.nsgg.core.physics.collisions.Collidable;
+import org.nsgg.main.Launcher;
 
 import java.awt.image.BufferedImage;
 import java.io.*;
@@ -54,5 +57,19 @@ public class Utils {
 
     public static int getBlueAmountOnPixel(int x, int y, BufferedImage image) {
         return image.getRGB(x,y) & 0xFF;
+    }
+
+    public static void removeAllPhysicsFromCollidableObject(Collidable collidable) {
+        List<IPhysics> units = Launcher.getGame().getPhysicsManager().getPhysicsUnits();
+        for (IPhysics unit: units) {
+            unit.remove(collidable);
+        }
+    }
+
+    public static void addAllPhysicsUnitsToCollidableObject(Collidable collidable) {
+        List<IPhysics> units = Launcher.getGame().getPhysicsManager().getPhysicsUnits();
+        for (IPhysics unit: units) {
+            unit.add(collidable);
+        }
     }
 }
