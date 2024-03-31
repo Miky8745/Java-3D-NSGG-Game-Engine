@@ -25,7 +25,6 @@ import java.awt.image.BufferedImage;
 import java.util.Random;
 
 import static org.lwjgl.glfw.GLFW.*;
-import static org.nsgg.core.utils.Config.*;
 
 public class GameLogic implements ILogic {
 
@@ -166,7 +165,7 @@ public class GameLogic implements ILogic {
 
         if(window.isKeyPressed(GLFW.GLFW_KEY_SPACE)) {
             if (!gmsp && camera.onGround) {
-                camera.vy = JUMP_HEIGHT;
+                camera.vy = Launcher.config.JUMP_HEIGHT;
             } else if(gmsp) {
                 cameraInc.y = 1;
             }

@@ -23,7 +23,7 @@ public class Config {
     public static final int MAX_POINT_LIGHTS = 5;
     public static final Vector3f NIGHT_VISION_AMBIENT_LIGHT = new Vector3f(1,1,1);
     public float GRAVITY;// = 9.81f;
-    public static final float JUMP_HEIGHT = 5;
+    public float JUMP_HEIGHT;// = 5;
 
     public void init() {
         FOV = (float) Math.toRadians(FOV);
