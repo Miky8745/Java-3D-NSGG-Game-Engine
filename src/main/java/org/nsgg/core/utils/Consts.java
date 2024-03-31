@@ -1,12 +1,13 @@
 package org.nsgg.core.utils;
 
+import org.joml.Math;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 
 public class Consts {
 
-    public static final String TITLE = "NSGG Game Engine";
-    public static final float FOV = (float) Math.toRadians(50);
+    public String TITLE;// = "NSGG Game Engine";
+    public float FOV;// = (float) Math.toRadians(50);
     public static final float Z_NEAR = 0.01f;
     public static final float Z_FAR = 1000f;
     public static final float MOUSE_SENSITIVITY = 0.2f;
@@ -21,6 +22,11 @@ public class Consts {
     public static final int MAX_SPOT_LIGHTS = 5;
     public static final int MAX_POINT_LIGHTS = 5;
     public static final Vector3f NIGHT_VISION_AMBIENT_LIGHT = new Vector3f(1,1,1);
-    public static final float G = -9.81f;
+    public static float G = 9.81f;
     public static final float JUMP_HEIGHT = 5;
+
+    public void init() {
+        FOV = (float) Math.toRadians(FOV);
+        G = G * -1;
+    }
 }
