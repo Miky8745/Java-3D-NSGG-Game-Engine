@@ -3,10 +3,9 @@ package org.nsgg.core.physics;
 import org.nsgg.core.entity.scenes.SceneManager;
 import org.nsgg.core.physics.collisions.Collidable;
 import org.nsgg.core.utils.Utils;
+import org.nsgg.main.Launcher;
 
 import java.util.List;
-
-import static org.nsgg.core.utils.Consts.G;
 
 public class Gravity implements IPhysics {
 
@@ -26,7 +25,7 @@ public class Gravity implements IPhysics {
                 }
                 continue;
             }
-            collidable.vy += G * Utils.deltaTime;
+            collidable.vy += Launcher.config.GRAVITY * Utils.deltaTime;
         }
     }
 

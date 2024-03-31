@@ -2,7 +2,6 @@ package org.nsgg.core.entity.terrain;
 
 import org.joml.Random;
 import org.joml.Vector3f;
-import org.lwjgl.opengl.GL11;
 import org.nsgg.core.ObjectLoader;
 import org.nsgg.core.entity.Material;
 import org.nsgg.core.entity.Model;
@@ -12,8 +11,8 @@ import org.nsgg.main.Launcher;
 
 import java.awt.image.BufferedImage;
 
-import static org.nsgg.core.utils.Consts.TERRAIN_SIZE;
-import static org.nsgg.core.utils.Consts.TERRAIN_VERTEX_COUNT;
+import static org.nsgg.core.utils.Config.TERRAIN_SIZE;
+import static org.nsgg.core.utils.Config.TERRAIN_VERTEX_COUNT;
 
 public class Terrain {
 

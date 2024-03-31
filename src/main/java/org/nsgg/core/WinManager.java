@@ -7,8 +7,9 @@ import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.system.MemoryUtil;
+import org.nsgg.main.Launcher;
 
-import static org.nsgg.core.utils.Consts.*;
+import static org.nsgg.core.utils.Config.*;
 
 public class WinManager {
 
@@ -156,11 +157,11 @@ public class WinManager {
 
     public Matrix4f updateProjectionMatrix() {
         float aspectRatio = (float) width / height;
-        return projectionMatrix.setPerspective(FOV, aspectRatio, Z_NEAR, Z_FAR);
+        return projectionMatrix.setPerspective(Launcher.config.FOV, aspectRatio, Z_NEAR, Z_FAR);
     }
 
     public Matrix4f updateProjectionMatrix(Matrix4f matrix4f, int width, int height) {
         float aspectRatio = (float) width / height;
-        return matrix4f.setPerspective(FOV, aspectRatio, Z_NEAR, Z_FAR);
+        return matrix4f.setPerspective(Launcher.config.FOV, aspectRatio, Z_NEAR, Z_FAR);
     }
 }

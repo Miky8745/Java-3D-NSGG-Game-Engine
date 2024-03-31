@@ -1,0 +1,8 @@
+{
+  "TITLE": "NSGG Game Engine",
+  "FOV": 50.0,
+  "MOUSE_SENSITIVITY": 0.2,
+  "CAMERA_MOVE_SPEED": 0.2,
+  "GRAVITY": 9.81,
+  "JUMP_HEIGHT": 5.0
+}

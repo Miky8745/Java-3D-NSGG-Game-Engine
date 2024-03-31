@@ -1,6 +1,7 @@
 package org.nsgg.core.utils;
 
 
+import com.google.gson.Gson;
 import org.lwjgl.system.MemoryUtil;
 import org.nsgg.core.physics.IPhysics;
 import org.nsgg.core.physics.collisions.Collidable;
@@ -70,6 +71,20 @@ public class Utils {
         List<IPhysics> units = Launcher.getGame().getPhysicsManager().getPhysicsUnits();
         for (IPhysics unit: units) {
             unit.add(collidable);
+        }
+    }
+
+    public static Config loadConfig() {
+        Config config;
+        Gson gson = new Gson();
+
+        try(FileReader reader = new FileReader("src/main/resources/config.json")) {
+            config = gson.fromJson(reader, Config.class);
+            config.init();
+            return config;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
     }
 }
