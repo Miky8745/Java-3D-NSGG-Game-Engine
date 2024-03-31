@@ -5,8 +5,8 @@ import org.lwjgl.glfw.GLFWErrorCallback;
 import org.nsgg.core.utils.Utils;
 import org.nsgg.main.Launcher;
 
-import static org.nsgg.core.utils.Consts.FRAMERATE;
-import static org.nsgg.core.utils.Consts.NANOSECOND;
+import static org.nsgg.core.utils.Config.FRAMERATE;
+import static org.nsgg.core.utils.Config.NANOSECOND;
 
 public class EngineManager {
 

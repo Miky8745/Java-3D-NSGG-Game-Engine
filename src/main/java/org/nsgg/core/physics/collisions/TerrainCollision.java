@@ -8,7 +8,7 @@ import org.nsgg.main.Launcher;
 
 import java.util.List;
 
-import static org.nsgg.core.utils.Consts.TERRAIN_SIZE;
+import static org.nsgg.core.utils.Config.TERRAIN_SIZE;
 public class TerrainCollision implements IPhysics {
 
     private List<Terrain> terrains;

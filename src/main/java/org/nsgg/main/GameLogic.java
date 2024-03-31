@@ -25,7 +25,7 @@ import java.awt.image.BufferedImage;
 import java.util.Random;
 
 import static org.lwjgl.glfw.GLFW.*;
-import static org.nsgg.core.utils.Consts.*;
+import static org.nsgg.core.utils.Config.*;
 
 public class GameLogic implements ILogic {
 
@@ -210,11 +210,11 @@ public class GameLogic implements ILogic {
     @Override
     public void update(float interval, MouseInput input) {
         int speedMultiplier = speed ? 10 : 1;
-        camera.movePosition(cameraInc.x * CAMERA_MOVE_SPEED * speedMultiplier, cameraInc.y * CAMERA_MOVE_SPEED * speedMultiplier, cameraInc.z * CAMERA_MOVE_SPEED * speedMultiplier);
+        camera.movePosition(cameraInc.x * Launcher.config.CAMERA_MOVE_SPEED * speedMultiplier, cameraInc.y * Launcher.config.CAMERA_MOVE_SPEED * speedMultiplier, cameraInc.z * Launcher.config.CAMERA_MOVE_SPEED * speedMultiplier);
 
         if(!lock) {
             Vector2f rotVec = input.getDisplayVec();
-            camera.moveRotation(rotVec.x * MOUSE_SENSITIVITY, rotVec.y * MOUSE_SENSITIVITY, 0);
+            camera.moveRotation(rotVec.x * Launcher.config.MOUSE_SENSITIVITY, rotVec.y * Launcher.config.MOUSE_SENSITIVITY, 0);
         }
         pitch = camera.getRotation().x;
         yaw = camera.getRotation().y;

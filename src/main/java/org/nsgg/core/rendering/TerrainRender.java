@@ -18,8 +18,8 @@ import org.nsgg.main.Launcher;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.nsgg.core.utils.Consts.MAX_POINT_LIGHTS;
-import static org.nsgg.core.utils.Consts.MAX_SPOT_LIGHTS;
+import static org.nsgg.core.utils.Config.MAX_POINT_LIGHTS;
+import static org.nsgg.core.utils.Config.MAX_SPOT_LIGHTS;
 
 public class TerrainRender implements IRenderer {
 

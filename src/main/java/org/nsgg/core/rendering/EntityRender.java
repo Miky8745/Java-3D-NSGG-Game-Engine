@@ -19,8 +19,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.nsgg.core.utils.Consts.MAX_POINT_LIGHTS;
-import static org.nsgg.core.utils.Consts.MAX_SPOT_LIGHTS;
+import static org.nsgg.core.utils.Config.MAX_POINT_LIGHTS;
+import static org.nsgg.core.utils.Config.MAX_SPOT_LIGHTS;
 
 public class EntityRender implements IRenderer {
 
