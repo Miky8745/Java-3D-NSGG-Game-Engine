@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import org.lwjgl.system.MemoryUtil;
 import org.nsgg.core.physics.IPhysics;
 import org.nsgg.core.physics.collisions.Collidable;
+import org.nsgg.core.utils.user.Config;
 import org.nsgg.main.Launcher;
 
 import java.awt.image.BufferedImage;
