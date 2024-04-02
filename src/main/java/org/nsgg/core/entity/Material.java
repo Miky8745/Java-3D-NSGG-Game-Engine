@@ -2,7 +2,7 @@ package org.nsgg.core.entity;
 
 import org.joml.Vector4f;
 
-import static org.nsgg.core.utils.Config.DEFAULT_COLOR;
+import static org.nsgg.core.utils.user.Config.DEFAULT_COLOR;
 
 public class Material {
     private Vector4f ambientColor, diffuseColor, specularColor;

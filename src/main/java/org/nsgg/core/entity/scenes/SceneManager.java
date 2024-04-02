@@ -11,8 +11,8 @@ import org.nsgg.core.physics.collisions.Collidable;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.nsgg.core.utils.Config.AMBIENT_LIGHT;
-import static org.nsgg.core.utils.Config.NIGHT_VISION_AMBIENT_LIGHT;
+import static org.nsgg.core.utils.user.Config.AMBIENT_LIGHT;
+import static org.nsgg.core.utils.user.Config.NIGHT_VISION_AMBIENT_LIGHT;
 
 public class SceneManager {
 

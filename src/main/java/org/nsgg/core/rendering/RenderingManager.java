@@ -15,7 +15,7 @@ import org.nsgg.main.Launcher;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.nsgg.core.utils.Config.*;
+import static org.nsgg.core.utils.user.Config.*;
 
 public class RenderingManager {
 

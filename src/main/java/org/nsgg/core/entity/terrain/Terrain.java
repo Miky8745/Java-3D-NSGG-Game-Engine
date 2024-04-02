@@ -11,8 +11,8 @@ import org.nsgg.main.Launcher;
 
 import java.awt.image.BufferedImage;
 
-import static org.nsgg.core.utils.Config.TERRAIN_SIZE;
-import static org.nsgg.core.utils.Config.TERRAIN_VERTEX_COUNT;
+import static org.nsgg.core.utils.user.Config.TERRAIN_SIZE;
+import static org.nsgg.core.utils.user.Config.TERRAIN_VERTEX_COUNT;
 
 public class Terrain {
 
@@ -21,6 +21,7 @@ public class Terrain {
     private TerrainTexture blendMap;
     private BlendMapTerrain blendMapTerrain;
     private Random rnd = new Random();
+    private float[] normals;
 
     public Terrain(Vector3f pos, ObjectLoader loader, Material material, BlendMapTerrain blendMapTerrain, TerrainTexture blendMap) {
         this.pos = pos;
@@ -34,7 +35,7 @@ public class Terrain {
         int count = TERRAIN_VERTEX_COUNT * TERRAIN_VERTEX_COUNT;
         BufferedImage heightMap = Launcher.getGame().heightMap;
         float[] vertices = new float[count * 3];
-        float[] normals = new float[count * 3];
+        normals = new float[count * 3];
         float[] textureCoords = new float[count * 2];
         int[] indices = new int[6 * (TERRAIN_VERTEX_COUNT - 1) * (TERRAIN_VERTEX_COUNT - 1)];
         int vertexPointer = 0;
@@ -93,5 +94,9 @@ public class Terrain {
 
     public BlendMapTerrain getBlendMapTerrain() {
         return blendMapTerrain;
+    }
+
+    public float[] getNormals() {
+        return normals;
     }
 }

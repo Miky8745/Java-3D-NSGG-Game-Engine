@@ -9,7 +9,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.system.MemoryUtil;
 import org.nsgg.main.Launcher;
 
-import static org.nsgg.core.utils.Config.*;
+import static org.nsgg.core.utils.user.Config.*;
 
 public class WinManager {
 

@@ -1,4 +1,4 @@
-package org.nsgg.core.utils;
+package org.nsgg.core.utils.user;
 
 import org.joml.Math;
 import org.joml.Vector3f;
