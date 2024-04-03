@@ -24,9 +24,11 @@ public class Config {
     public static final Vector3f NIGHT_VISION_AMBIENT_LIGHT = new Vector3f(1,1,1);
     public float GRAVITY;// = 9.81f;
     public float JUMP_HEIGHT;// = 5;
+    public String DEFAULT_GAMEMODE;
 
     public void init() {
         FOV = (float) Math.toRadians(FOV);
         GRAVITY = GRAVITY * -1;
+        DEFAULT_GAMEMODE = DEFAULT_GAMEMODE.equals("Spectator") || DEFAULT_GAMEMODE.equals("Normal") ? DEFAULT_GAMEMODE : "Normal";
     }
 }

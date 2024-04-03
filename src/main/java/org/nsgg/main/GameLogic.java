@@ -57,6 +57,7 @@ public class GameLogic implements ILogic {
 
     @Override
     public void init() throws Exception {
+        gmsp = Launcher.config.DEFAULT_GAMEMODE.equals("Spectator");
         renderer.init();
 
         Model model = loader.loadOBJModel("src/main/resources/models/cube.obj");
